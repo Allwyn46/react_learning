@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 
 type FormFields = {
     email: string
@@ -6,15 +6,21 @@ type FormFields = {
 }
 
 const FormComponent = () => {
-    const { register } = useForm<FormFields>()
+    const { register, handleSubmit } = useForm<FormFields>()
+
+    const onSubmit: SubmitHandler<FormFields> = (data) => {
+        console.log(data)
+    }
 
     return (
         <section className="flex justify-center items-center mt-10">
             <div className="flex flex-column justify-between">
-                <form action="">
+                <form action="" onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-6">
                         <input
-                            {...register('email')}
+                            {...register('email', {
+                                required: true,
+                            })}
                             type="text"
                             placeholder="Enter Email"
                             className="input"
@@ -22,7 +28,9 @@ const FormComponent = () => {
                     </div>
                     <div className="mb-6">
                         <input
-                            {...register('password')}
+                            {...register('password', {
+                                required: true,
+                            })}
                             type="password"
                             placeholder="Enter Password"
                             className="input"
