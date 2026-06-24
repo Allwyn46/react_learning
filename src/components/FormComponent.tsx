@@ -9,11 +9,19 @@ const FormComponent = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        setError,
+        formState: { errors, isSubmitting },
     } = useForm<FormFields>()
 
-    const onSubmit: SubmitHandler<FormFields> = (data) => {
-        console.log(data)
+    const onSubmit: SubmitHandler<FormFields> = async (data) => {
+        try {
+            await new Promise((resolve) => setInterval(resolve, 1000))
+            console.log(data)
+        } catch (error) {
+            setError('email', {
+                message: 'Email already taken',
+            })
+        }
     }
 
     return (
@@ -61,7 +69,9 @@ const FormComponent = () => {
                     </div>
 
                     <div>
-                        <button type="submit">Submit</button>
+                        <button type="submit" disabled={isSubmitting}>
+                            {isSubmitting ? 'Loading' : 'Submit'}
+                        </button>
                     </div>
                 </form>
             </div>
