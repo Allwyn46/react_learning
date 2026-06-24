@@ -1,9 +1,13 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, type SubmitHandler } from 'react-hook-form'
+import { z } from 'zod'
 
-type FormFields = {
-    email: string
-    password: string
-}
+const schema = z.object({
+    email: z.string().email(),
+    password: z.string().min(8),
+})
+
+type FormFields = z.infer<typeof schema>
 
 const FormComponent = () => {
     const {
@@ -11,7 +15,12 @@ const FormComponent = () => {
         handleSubmit,
         setError,
         formState: { errors, isSubmitting },
-    } = useForm<FormFields>()
+    } = useForm<FormFields>({
+        defaultValues: {
+            email: 'test@gmail.com',
+        },
+        resolver: zodResolver(schema),
+    })
 
     const onSubmit: SubmitHandler<FormFields> = async (data) => {
         try {
@@ -30,13 +39,7 @@ const FormComponent = () => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-4">
                         <input
-                            {...register('email', {
-                                required: 'Email is required',
-                                pattern: {
-                                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                                    message: 'Enter a valid email address',
-                                },
-                            })}
+                            {...register('email')}
                             type="email"
                             placeholder="Enter Email"
                             className="input"
@@ -50,13 +53,7 @@ const FormComponent = () => {
 
                     <div className="mb-4">
                         <input
-                            {...register('password', {
-                                required: 'Password is required',
-                                minLength: {
-                                    value: 8,
-                                    message: 'Password must have 8 characters',
-                                },
-                            })}
+                            {...register('password')}
                             type="password"
                             placeholder="Enter Password"
                             className="input"
