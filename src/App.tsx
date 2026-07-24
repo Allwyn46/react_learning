@@ -2,6 +2,7 @@ import './App.css'
 import Compound from './components/Compound'
 import DataFetching from './components/DataFetching'
 import FormComponent from './components/FormComponent'
+import UseEffectLearn from './components/UseEffectLearn'
 
 function App() {
     return (
@@ -13,6 +14,10 @@ function App() {
 
             <section className="mt-10">
                 <Compound />
+            </section>
+
+            <section>
+                <UseEffectLearn />
             </section>
         </>
     )

@@ -1,9 +1,12 @@
-import React, { useContext } from 'react'
-import { DashboardContext, useUserContext } from '../contexts/context'
+import { useUserContext } from '../contexts/context'
 
 const Sidebar = () => {
     const user = useUserContext()
-    return <div>Sidebar</div>
+    return (
+        <div>
+            <h1>{user.name}</h1>
+        </div>
+    )
 }
 
 export default Sidebar
